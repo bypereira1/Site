@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhe seu Pedido de Açaí</title>
+    <link rel="stylesheet" href="ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="css/header.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #403f3f;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        h1 {
+            color: #5b044f;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #5b044f;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e8cce8;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="text"]:focus {
+            border-color: #5b0e5c;
+            box-shadow: 0 0 5px rgba(91, 14, 92, 0.2);
+        }
+        button {
+            background-color: #5b044f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #4a0c4a;
+        }
+        .header {
+            background-color: #5b044f;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin: -20px -20px 20px -20px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+            background-color: #5b044f;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .logo i {
+            font-size: 50px;
+            color: #5b044f;
+            display: inline-block;
+        }
+        .instruction {
+            background-color: #f9f0f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #e8cce8;
+        }
+        .error {
+            color: #5b044f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo i {
+            font-size: 40px;
+            color: #5b044f;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+            background-color: #5b044f;
+        }
+        .header-logo {
+            max-width: 150px;
+            height: auto;
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+    <div style="background-color: #5b044f; width: 100%; padding: 8px 0; text-align: center;">
+        <div style="max-width: 400px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+            <img src="images/logo.png" alt="Açaí Delivery" class="header-logo" style="max-width: 50px; margin-right: 10px;">
+            <span style="color: white; font-weight: bold; font-size: 16px;"><i class="fas fa-check-circle" style="margin-right: 5px;"></i> CONFIRA SEUS DADOS</span>
+        </div>
+    </div>
+    <div class="container" style="margin-top: 20px;">
+        
+        <div class="logo">
+            <i class="fas fa-ice-cream"></i>
+        </div>
+        
+        <div class="instruction">
+            <p>Para acompanhar seu pedido, digite seu CPF e CEP abaixo:</p>
+        </div>
+        
+        <form id="trackingForm" action="backend.php" method="POST">
+            <div class="form-group">
+                <label for="cpf">CPF do Pedido:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14">
+                <div id="cpfError" class="error">CPF inválido. Verifique o número digitado.</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="cep">CEP do Endereço:</label>
+                <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
+                <div id="cepError" class="error">CEP inválido. Verifique o número digitado.</div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">VERIFICAR MEU PEDIDO</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Formata o CPF enquanto o usuário digita
+        document.getElementById('cpf').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                value = value.replace(/\.(\d{3})(\d)/, '.$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        // Formata o CEP enquanto o usuário digita
+        document.getElementById('cep').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        // Validação antes de enviar o formulário
+        document.getElementById('trackingForm').addEventListener('submit', function (e) {
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+            let isValid = true;
+
+            // Validação básica do CPF (apenas comprimento)
+            if (cpf.length !== 11) {
+                document.getElementById('cpfError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('cpfError').style.display = 'none';
+            }
+
+            // Validação básica do CEP (apenas comprimento)
+            if (cep.length !== 8) {
+                document.getElementById('cepError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('cepError').style.display = 'none';
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+    <script src="js/loading.js"></script>
+</body>
+</html>
