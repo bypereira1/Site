@@ -933,44 +933,47 @@
             </div>
         </div>
         <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/deliveryProduto.js"></script>
-    
-        <script src="js/all.js" data-auto-replace-svg="nest" defer="" type="text/javascript"></script>
-        <script type="text/javascript" src="js/jquery-mask.js" defer=""></script>
-    
-        <script src="js/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-        <script>
-            function finalizar() {
+<script type="text/javascript" src="js/deliveryProduto.js"></script>
+
+<script src="js/all.js" data-auto-replace-svg="nest" defer="" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery-mask.js" defer=""></script>
+
+<script src="js/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function finalizar() {
+        Swal.fire({
+            title: "Deseja que entregamos agora?",
+            showDenyButton: true,
+            showCancelButton: false,
+            allowOutsideClick: false,
+            icon: 'question',
+            confirmButtonText: "Sim, por favor!",
+            confirmButtonColor: "green",
+            denyButtonText: `Não, quero agendar a entrega!`,
+            focusConfirm: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Substituído pelo seu link específico:
+                location.href = "https://checkout.acaizada.dpdns.org/checkout?product=e103016d-5c4b-11f0-a3b6-46da4690ad53";
+            } else if (result.isDenied) {
                 Swal.fire({
-                    title: "Deseja que entregamos agora?",
-                    showDenyButton: true,
+                    title: "Selecione o dia e a hora, por gentileza!",
+                    text: 'Deixe seu pedido agendado e receba na hora combinada.',
+                    confirmButtonText: "Agendar pedido!",
+                    confirmButtonColor: "green",
                     showCancelButton: false,
                     allowOutsideClick: false,
-                    icon: 'question',
-                    confirmButtonText: "Sim, por favor!",
-                    confirmButtonColor: "green",
-                    denyButtonText: `Não, quero agendar a entrega!`,
-                    focusConfirm: true,
+                    input: "datetime-local",
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.href = $('a#finalizarPedido').attr('href');
-                    } else if (result.isDenied) {
-                        Swal.fire({
-                            title: "Selecione o dia e a hora, por gentileza!",
-                            text: 'Deixe seu pedido agendado e receba na hora combinada.',
-                            confirmButtonText: "Agendar pedido!",
-                            confirmButtonColor: "green",
-                            showCancelButton: false,
-                            allowOutsideClick: false,
-                            input: "datetime-local",
-                        }).then((result) => {
-                            location.href = $('a#finalizarPedido').attr('href');
-                        });
-                    }
+                    // Substituído pelo mesmo link (caso queira o mesmo destino após agendamento):
+                    location.href = "https://checkout.acaizada.dpdns.org/checkout?product=e103016d-5c4b-11f0-a3b6-46da4690ad53";
                 });
             }
-        </script>
+        });
+    }
+</script>
+
     
     
     
